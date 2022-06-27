@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const Home: NextPage = () => {
-  const string =
-    'Hello\u00a0my\u00a0name\u00a0is\u00a0FreddieI\u00a0like\u00a0to\u00a0build\u00a0stuff';
+  const string = 'Hello my name is FreddieI like to build stuff';
   const [isCursorRendered, setIsCursorRendered] = useState(false);
   const [stringIdx, setStringIdx] = useState(0);
   const [array, setArray] = useState<string[]>([]);
+  const [isArrowRendered, setIsArrowRendered] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -18,27 +19,37 @@ const Home: NextPage = () => {
     setTimeout(() => {
       if (stringIdx < string.length) {
         const arrayCopy = structuredClone(array);
-        arrayCopy.push(string[stringIdx]);
+        const char = string[stringIdx] === ' ' ? '\u00a0' : string[stringIdx];
+        arrayCopy.push(char);
         setArray(arrayCopy);
         setStringIdx(stringIdx + 1);
       }
     }, 120);
   }, [stringIdx]);
 
+  useEffect(() => {
+    if (stringIdx === string.length - 1) {
+      setIsArrowRendered(true);
+    }
+  }, [stringIdx]);
+
   return (
-    <div className='flex justify-center items-center w-screen h-screen'>
-      <div className='flex justify-center items-center w-4/5 h-40 border-2 border-black'>
-        <div className='h-4 w-[11.5rem] flex flex-wrap items-center'>
-          {array.map((char, idx) => (
-            <span key={idx}>{char}</span>
-          ))}
-          <div
-            className={`w-2 ml-[0.1rem] h-full bg-black ${
-              isCursorRendered ? 'visible' : 'invisible'
-            }`}
-          ></div>
-        </div>
+    <div className='flex flex-col items-center w-screen h-screen bg-charcoal relative'>
+      <div className='w-[69rem] mt-20 flex flex-wrap justify-start items-center text-middle-blue text-8xl'>
+        {array.map((char, idx) => (
+          <span key={idx}>{char}</span>
+        ))}
+        <div
+          className={`w-[3rem] h-[4.8rem] ml-[0.4rem] bg-middle-blue ${
+            isCursorRendered ? 'visible' : 'invisible'
+          }`}
+        ></div>
       </div>
+      <div
+        className={`${
+          isArrowRendered ? 'opacity-100' : 'opacity-0'
+        } transition-opacity duration-1000 text-middle-blue absolute top-[88%]`}
+      ></div>
     </div>
   );
 };
