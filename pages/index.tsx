@@ -29,7 +29,9 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (stringIdx === string.length - 1) {
-      setIsArrowRendered(true);
+      setTimeout(() => {
+        setIsArrowRendered(true);
+      }, 200);
     }
   }, [stringIdx]);
 
@@ -47,9 +49,11 @@ const Home: NextPage = () => {
       </div>
       <div
         className={`${
-          isArrowRendered ? 'opacity-100' : 'opacity-0'
-        } transition-opacity duration-1000 text-middle-blue absolute top-[88%]`}
-      ></div>
+          isArrowRendered ? 'opacity-100 cursor-pointer' : 'opacity-0'
+        } transition-opacity duration-1000 absolute top-[80%] flex`}
+      >
+        <div className='w-[4rem] h-[4rem] rotate-[45deg] bg-charcoal border-t-0 border-r-4 border-b-4 border-l-0 border-middle-blue'></div>
+      </div>
     </div>
   );
 };
